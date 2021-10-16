@@ -22,8 +22,8 @@ public class AprioriModel {
     
     public AprioriModel() {} 
     
-    public AprioriModel(String filename) throws Exception {
-        this.dtsource = new DataSource(filename);
+    public AprioriModel(String pathFile) throws Exception {
+        this.dtsource = new DataSource(pathFile);
         this.dataset = dtsource.getDataSet();
         this.apriori = new Apriori();
     }

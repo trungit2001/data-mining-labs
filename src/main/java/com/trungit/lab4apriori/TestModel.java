@@ -8,7 +8,7 @@ package com.trungit.lab4apriori;
  *
  * @author ThanhTrungK15
  */
-public class AprioriModelTest {
+public class TestModel {
 
     /**
      * @param args the command line arguments
@@ -23,6 +23,7 @@ public class AprioriModelTest {
         String modelConfig = "-N 10 -T 0 -C 0.9 -D 0.05 -U 1.0 -M 0.1 -S -1.0 -c -1";
         String agrsFilterConfig = "-R first-last";
                 
+        /* Mô hình khai thác dữ liệu theo Apriori rule */
         AprioriModel aprioriModel = new AprioriModel(pathFile);
         aprioriModel.convertNumericToNominal(agrsFilterConfig);
         aprioriModel.mineAprioriRules(modelConfig);
@@ -30,6 +31,9 @@ public class AprioriModelTest {
         System.out.println(aprioriModel.printDataset());
         System.out.println(aprioriModel.toString());
         
+//        /* Mô hình khai thác dữ liệu theo FP-Growth */
+//        FPGrowthModel fpGrowthModel = new FPGrowthModel(pathFile);
+//        System.out.println(fpGrowthModel.printDataset());
     }
     
 }
