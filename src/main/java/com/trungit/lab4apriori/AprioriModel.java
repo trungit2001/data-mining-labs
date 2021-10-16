@@ -47,6 +47,10 @@ public class AprioriModel {
         apriori.buildAssociations(dataset);
     }
     
+    public String printDataset() {
+        return dataset.toString();
+    }
+    
     @Override
     public String toString() {
         return apriori.toString();

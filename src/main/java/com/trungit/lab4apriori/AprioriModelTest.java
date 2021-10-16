@@ -26,7 +26,10 @@ public class AprioriModelTest {
         AprioriModel aprioriModel = new AprioriModel(pathFile);
         aprioriModel.convertNumericToNominal(agrsFilterConfig);
         aprioriModel.mineAprioriRules(modelConfig);
+        
+        System.out.println(aprioriModel.printDataset());
         System.out.println(aprioriModel.toString());
+        
     }
     
 }
