@@ -24,7 +24,8 @@ public class AprioriModelTest {
         String agrsFilterConfig = "-R first-last";
                 
         AprioriModel aprioriModel = new AprioriModel(pathFile);
-        aprioriModel.mineAprioriRules(modelConfig, agrsFilterConfig);
+        aprioriModel.convertNumericToNominal(agrsFilterConfig);
+        aprioriModel.mineAprioriRules(modelConfig);
         System.out.println(aprioriModel.toString());
     }
     

@@ -16,7 +16,7 @@ import weka.filters.unsupervised.attribute.NumericToNominal;
  */
 public class AprioriModel {
     private DataSource dtsource;
-    private Instances dataset, newDataset;
+    private Instances dataset;
     private Apriori apriori;
     private String[] modelConfig, agrsFilterConfig;
     
@@ -28,25 +28,23 @@ public class AprioriModel {
         this.apriori = new Apriori();
     }
 
-    public Instances convertNumericToNominal(Instances dataset, String agrsFilterConfig) throws Exception {
+    public void convertNumericToNominal(String agrsFilterConfig) throws Exception {
         this.agrsFilterConfig = weka.core.Utils.splitOptions(agrsFilterConfig);
         NumericToNominal numericToNominal = new NumericToNominal();
         
         numericToNominal.setOptions(this.agrsFilterConfig);
         numericToNominal.setInputFormat(dataset);
         
-        return Filter.useFilter(dataset, numericToNominal);
+        /* Áp dụng bộ lọc cho tập dữ liệu và ghi đè bộ dữ liệu cũ */
+        this.dataset =  Filter.useFilter(dataset, numericToNominal);
     }
     
-    public void mineAprioriRules(String modelConfig, String agrsFilterConfig) throws Exception {
-        /* Gọi phương thức để convert Numeric về Nominal và gán vào đối tượng mới */
-        this.newDataset = convertNumericToNominal(dataset, agrsFilterConfig);
-        
-        /* Tạo tham số tinh chỉnh mô hình từ chuỗi tham số truyền vào */
+    public void mineAprioriRules(String modelConfig) throws Exception {
+         /* Tạo tham số tinh chỉnh mô hình từ chuỗi tham số truyền vào */
         this.modelConfig = weka.core.Utils.splitOptions(modelConfig);
         
         apriori.setOptions(this.modelConfig);
-        apriori.buildAssociations(newDataset);
+        apriori.buildAssociations(dataset);
     }
     
     @Override
