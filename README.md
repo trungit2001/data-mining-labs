@@ -1,3 +1,3 @@
 Data mining and application
 ================
-Apriori rules with Java code and Weka framework
+Apriori rules and FP-Growth with Java code and Weka framework
