@@ -16,6 +16,7 @@ import weka.core.converters.ConverterUtils.DataSource;
 import weka.filters.Filter;
 import weka.filters.unsupervised.attribute.NumericToNominal;
 import weka.filters.unsupervised.attribute.Remove;
+import weka.filters.unsupervised.attribute.RemoveByName;
 
 /**
  *
@@ -33,13 +34,21 @@ public class AprioriModel {
     private CSVSaver csvSaver;
     
     private Instances dataset;
-    private final Apriori apriori;
+    private Apriori apriori;
     
-    public AprioriModel() {
-        apriori = new Apriori();
-    } 
+    /**
+     * 
+     * Constructor mặc định
+     */
+    public AprioriModel() {} 
     
-    
+    /**
+     * 
+     * Constructor có tham số
+     * 
+     * @param pathFileToLoad Đường dẫn đến file dữ liệu *.arff cần tải lên
+     * @throws Exception 
+     */
     public AprioriModel(String pathFileToLoad) throws Exception {
         dtsource = new DataSource(pathFileToLoad);
         dataset = dtsource.getDataSet();
@@ -105,14 +114,14 @@ public class AprioriModel {
      * 
      * Loại bỏ các thuộc tính dư thừa theo tham số truyền vào
      * 
-     * @param argsRemoveFilterConfig Chuỗi tham số tinh chỉnh cho bộ lọc Remove
+     * @param argsFilterCfg Chuỗi tham số tinh chỉnh cho bộ lọc Remove
      * của Weka
      * @throws Exception 
      */
-    public void remove(String argsRemoveFilterConfig) throws Exception {
-        String[] argsFilter = weka.core.Utils.splitOptions(argsRemoveFilterConfig);
+    public void remove(String argsFilterCfg) throws Exception {
         Remove removeFilter = new Remove();
-        
+        String[] argsFilter = weka.core.Utils.splitOptions(argsFilterCfg);
+
         removeFilter.setOptions(argsFilter);
         removeFilter.setInputFormat(dataset);
         
@@ -120,18 +129,24 @@ public class AprioriModel {
         dataset = Filter.useFilter(dataset, removeFilter);
     }
     
+    public void removeByName(String argsFilterCfg) throws Exception {
+        RemoveByName removeByNameFilter = new RemoveByName();
+        String[] argsFilter = weka.core.Utils.splitOptions(argsFilterCfg);
+        
+    }
+    
     
     /**
      * 
      * Chuyển đổi thuộc tính số Numeric sang thuộc tính rời rạc Nominal
      * 
-     * @param argsNumericToNominalFilterConfig Chuỗi thông số tinh chỉnh cho bộ lọc
+     * @param argsFilterCfg Chuỗi thông số tinh chỉnh cho bộ lọc
      * NumericToNominal của Weka
      * @throws java.lang.Exception
      */
-    public void convertNumericToNominal(String argsNumericToNominalFilterConfig) throws Exception {
-        String[] argsFilter = weka.core.Utils.splitOptions(argsNumericToNominalFilterConfig);
+    public void convertNumericToNominal(String argsFilterCfg) throws Exception {
         NumericToNominal numericToNominalFilter = new NumericToNominal();
+        String[] argsFilter = weka.core.Utils.splitOptions(argsFilterCfg);
         
         numericToNominalFilter.setOptions(argsFilter);
         numericToNominalFilter.setInputFormat(dataset);
@@ -144,13 +159,13 @@ public class AprioriModel {
      * 
      * Khai thác luật kết hợp với thuật toán Apriori
      * 
-     * @param argsModelConfig Chuỗi thông số tinh chỉnh cho mô hình Apriori
+     * @param argsModelCfg Chuỗi thông số tinh chỉnh cho mô hình Apriori
      * @throws java.lang.Exception
      */
-    public void mineAprioriRules(String argsModelConfig) throws Exception {
-        String[] modelConfig = weka.core.Utils.splitOptions(argsModelConfig);
+    public void mineAprioriRules(String argsModelCfg) throws Exception {
+        String[] argsModel = weka.core.Utils.splitOptions(argsModelCfg);
         
-        apriori.setOptions(modelConfig);
+        apriori.setOptions(argsModel);
         apriori.buildAssociations(dataset);
     }
     

@@ -33,14 +33,23 @@ public class FPGrowthModel {
     private CSVSaver csvSaver;
     
     private Instances dataset;
-    private final FPGrowth fpGrowth;
+    private FPGrowth fpGrowth;
     
-    public  FPGrowthModel() {
-        fpGrowth = new FPGrowth();
-    }
+    /**
+     * 
+     * Constructor mặc định
+     */
+    public  FPGrowthModel() {}
     
-    public FPGrowthModel(String pathFile) throws Exception {
-        dtsource = new DataSource(pathFile);
+    /**
+     * 
+     * Constructor có tham số
+     * 
+     * @param pathFileToLoad Đường dẫn đến file dữ liệu *.arff cần tải lên
+     * @throws Exception 
+     */
+    public FPGrowthModel(String pathFileToLoad) throws Exception {
+        dtsource = new DataSource(pathFileToLoad);
         dataset = dtsource.getDataSet();
         fpGrowth = new FPGrowth();
     }
@@ -50,7 +59,7 @@ public class FPGrowthModel {
      * Đọc dữ liệu dạng file *.arff lên chương trình
      * 
      * @param pathFileToLoad Đường dẫn đến file dữ liệu *.arff cần tải lên
-     * @throws IOException 
+     * @throws IOException
      */
     public void loadARFF(String pathFileToLoad) throws IOException {
         arffLoader = new ArffLoader();
@@ -104,13 +113,12 @@ public class FPGrowthModel {
      * 
      * Loại bỏ các thuộc tính dư thừa theo tham số truyền vào
      * 
-     * @param argsRemoveFilterConfig Chuỗi tham số tinh chỉnh cho bộ lọc Remove
-     * của Weka
+     * @param argsFilterCfg Chuỗi tham số tinh chỉnh cho bộ lọc Remove của Weka
      * @throws Exception 
      */
-    public void remove(String argsRemoveFilterConfig) throws Exception {
-        String[] argsFilter = weka.core.Utils.splitOptions(argsRemoveFilterConfig);
+    public void remove(String argsFilterCfg) throws Exception {
         Remove removeFilter = new Remove();
+        String[] argsFilter = weka.core.Utils.splitOptions(argsFilterCfg);
         
         removeFilter.setOptions(argsFilter);
         removeFilter.setInputFormat(dataset);
@@ -123,14 +131,14 @@ public class FPGrowthModel {
      * 
      * Chuyển thuộc tính dạng Nominal sang Binary
      * 
-     * @param argsNominalToBinaryFilterConfig Chuỗi tham số tinh chỉnh cho bộ lọc
+     * @param argsFilterCfg Chuỗi tham số tinh chỉnh cho bộ lọc
      * NominalToBinary của Weka
      * @throws Exception 
      */
-    public void convertNominalToBinary(String argsNominalToBinaryFilterConfig) throws Exception {
-        String[] argsFilter = weka.core.Utils.splitOptions(argsNominalToBinaryFilterConfig);
-        
+    public void convertNominalToBinary(String argsFilterCfg) throws Exception {
         NominalToBinary nominalToBinaryFilter = new NominalToBinary();
+        String[] argsFilter = weka.core.Utils.splitOptions(argsFilterCfg);
+        
         nominalToBinaryFilter.setOptions(argsFilter);
         nominalToBinaryFilter.setInputFormat(dataset);
         
@@ -138,18 +146,17 @@ public class FPGrowthModel {
     }
     
     
-    
     /**
      * 
      * Khai thác luật kết hợp với thuật toán FP-Growth
      * 
-     * @param argsModelConfig Chuỗi thông số tinh chỉnh cho mô hình FP-Growth
+     * @param argsModelCfg Chuỗi thông số tinh chỉnh cho mô hình FP-Growth
      * @throws Exception 
      */
-    public void mineFPGrowthRules(String argsModelConfig) throws Exception {
-        String[] modelConfig = weka.core.Utils.splitOptions(argsModelConfig);
+    public void mineFPGrowthRules(String argsModelCfg) throws Exception {
+        String[] argsModel = weka.core.Utils.splitOptions(argsModelCfg);
         
-        fpGrowth.setOptions(modelConfig);
+        fpGrowth.setOptions(argsModel);
         fpGrowth.buildAssociations(dataset);
     }
 
