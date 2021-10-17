@@ -15,6 +15,7 @@ import weka.core.converters.CSVSaver;
 import weka.core.converters.ConverterUtils.DataSource;
 import weka.filters.Filter;
 import weka.filters.unsupervised.attribute.NominalToBinary;
+import weka.filters.unsupervised.attribute.NumericToBinary;
 import weka.filters.unsupervised.attribute.Remove;
 import weka.filters.unsupervised.attribute.RemoveByName;
 import weka.filters.unsupervised.attribute.ReplaceMissingWithUserConstant;
@@ -106,7 +107,6 @@ public class FPGrowthModel {
     public void saveCSV(String pathFileToSave) throws IOException {
         csvSaver = new CSVSaver();
         csvSaver.setInstances(dataset);
-        
         csvSaver.setFile(new File(pathFileToSave));
         csvSaver.writeBatch();
     }
@@ -183,6 +183,23 @@ public class FPGrowthModel {
         dataset = Filter.useFilter(dataset, nominalToBinaryFilter);
     }
     
+    /**
+     * 
+     * Chuyển thuộc tính dạng Numeric sang Binary
+     * 
+     * @param argsFilterCfg Chuỗi tham số tinh chỉnh cho bộ lọc
+     * NumericToBinary của Weka
+     * @throws Exception 
+     */
+    public void convertNumericToBinary(String argsFilterCfg) throws Exception {
+        NumericToBinary numericToBinaryFilter = new NumericToBinary();
+        String[] argsFilter = weka.core.Utils.splitOptions(argsFilterCfg);
+        
+        numericToBinaryFilter.setOptions(argsFilter);
+        numericToBinaryFilter.setInputFormat(dataset);
+        
+        dataset = Filter.useFilter(dataset, numericToBinaryFilter);
+    }
     
     /**
      * 
