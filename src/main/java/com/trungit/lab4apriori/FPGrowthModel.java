@@ -4,9 +4,17 @@
  */
 package com.trungit.lab4apriori;
 
+import java.io.File;
+import java.io.IOException;
 import weka.associations.FPGrowth;
 import weka.core.Instances;
+import weka.core.converters.ArffLoader;
+import weka.core.converters.ArffSaver;
+import weka.core.converters.CSVLoader;
+import weka.core.converters.CSVSaver;
 import weka.core.converters.ConverterUtils.DataSource;
+import weka.filters.Filter;
+import weka.filters.unsupervised.attribute.Remove;
 
 /**
  *
@@ -14,22 +22,106 @@ import weka.core.converters.ConverterUtils.DataSource;
  */
 public class FPGrowthModel {
     private DataSource dtsource;
+    
+    /* Load and save *.arff file */
+    private ArffLoader arffLoader;
+    private ArffSaver arffSaver;
+    
+    /* Load and save *.csv file*/
+    private CSVLoader csvLoader;
+    private CSVSaver csvSaver;
+    
     private Instances dataset;
-    private FPGrowth fpGrowth;
-    private String[] modelConfig, argsFilterConfig;
+    private final FPGrowth fpGrowth;
     
-    public  FPGrowthModel() {}
-    
-    public FPGrowthModel(String pathFile) throws Exception {
-        this.dtsource = new DataSource(pathFile);
-        this.dataset = dtsource.getDataSet();
-        this.fpGrowth = new FPGrowth();
+    public  FPGrowthModel() {
+        fpGrowth = new FPGrowth();
     }
     
-    public void mineFPGrowthRules(String modelConfig) throws Exception {
-        this.modelConfig = weka.core.Utils.splitOptions(modelConfig);
+    public FPGrowthModel(String pathFile) throws Exception {
+        dtsource = new DataSource(pathFile);
+        dataset = dtsource.getDataSet();
+        fpGrowth = new FPGrowth();
+    }
+    
+    /**
+     * 
+     * Đọc dữ liệu dạng file *.arff lên chương trình
+     * 
+     * @param pathFileToLoad Đường dẫn đến file dữ liệu *.arff cần tải lên
+     * @throws IOException 
+     */
+    public void loadARFF(String pathFileToLoad) throws IOException {
+        arffLoader = new ArffLoader();
+        arffLoader.setFile(new File(pathFileToLoad));
+        dataset = arffLoader.getDataSet();
+    }
+    
+    /**
+     * 
+     * Lưu file dữ liệu dạng *.arff xuống ổ cứng
+     * 
+     * @param pathFileToSave Đường dẫn đến file *.arff cần lưu
+     * @throws IOException 
+     */
+    public void saverARFF(String pathFileToSave) throws IOException {
+        arffSaver = new ArffSaver();
+        arffSaver.setInstances(dataset);
+        arffSaver.setFile(new File(pathFileToSave));
+        arffSaver.writeBatch();
+    }
+    
+    /**
+     * 
+     * Đọc dữ liệu dạng file *.csv lên chương trình
+     * 
+     * @param pathFileToLoad Đường dẫn đến file dữ liệu *.csv cần tải lên
+     * @throws Exception 
+     */
+    public void loadCSV(String pathFileToLoad) throws Exception {
+        csvLoader = new CSVLoader();
+        csvLoader.setSource(new File(pathFileToLoad));
+        dataset = csvLoader.getDataSet();
+    }
+          
+    /**
+     * 
+     * Lưu file dữ liệu dạng *.csv xuống ổ cứng
+     * 
+     * @param pathFileToSave Đường dẫn đến file *.csv cần lưu
+     * @throws IOException 
+     */
+    public void saveCSV(String pathFileToSave) throws IOException {
+        csvSaver = new CSVSaver();
+        csvSaver.setInstances(dataset);
         
-        fpGrowth.setOptions(this.modelConfig);
+        csvSaver.setFile(new File(pathFileToSave));
+        csvSaver.writeBatch();
+    }
+    
+    /**
+     * 
+     * Loại bỏ các thuộc tính dư thừa theo tham số truyền vào
+     * 
+     * @param argsRemoveFilterConfig Chuỗi tham số tinh chỉnh cho bộ lọc Remove
+     * của Weka
+     * @throws Exception 
+     */
+    public void remove(String argsRemoveFilterConfig) throws Exception {
+        String[] argsFilter = weka.core.Utils.splitOptions(argsRemoveFilterConfig);
+        Remove removeFilter = new Remove();
+        
+        removeFilter.setOptions(argsFilter);
+        removeFilter.setInputFormat(dataset);
+        
+        /* Áp dụng bộ lọc và ghi đè lại dữ liệu cũ */
+        dataset = Filter.useFilter(dataset, removeFilter);
+    }
+    
+    public void mineFPGrowthRules(String argsModelConfig) throws Exception {
+        String[] modelConfig = weka.core.Utils.splitOptions(argsModelConfig);
+        
+        fpGrowth.setOptions(modelConfig);
         fpGrowth.buildAssociations(dataset);
     }
 
@@ -41,5 +133,4 @@ public class FPGrowthModel {
     public String toString() {
         return fpGrowth.toString();
     }
-    
 }

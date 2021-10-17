@@ -6,10 +6,11 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
     <dependencies>
+        <!-- https://mvnrepository.com/artifact/nz.ac.waikato.cms.weka/weka-stable -->
         <dependency>
-            <groupId>weka</groupId>
-            <artifactId>weka</artifactId>
-            <version>3.8.5</version>
+                <groupId>nz.ac.waikato.cms.weka</groupId>
+                <artifactId>weka-stable</artifactId>
+                <version>3.8.0</version>
         </dependency>
     </dependencies>
     <properties>

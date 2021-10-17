@@ -22,7 +22,7 @@ import weka.filters.unsupervised.attribute.Remove;
  * @author ThanhTrungK15
  */
 public class AprioriModel {
-    DataSource dtsource;
+    private DataSource dtsource;
     
     /* Load and save *.arff file */
     private ArffLoader arffLoader;
@@ -33,9 +33,10 @@ public class AprioriModel {
     private CSVSaver csvSaver;
     
     private Instances dataset;
-    private Apriori apriori;
+    private final Apriori apriori;
     
     public AprioriModel() {
+        apriori = new Apriori();
     } 
     
     
