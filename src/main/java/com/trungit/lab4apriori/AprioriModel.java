@@ -22,6 +22,8 @@ import weka.filters.unsupervised.attribute.Remove;
  * @author ThanhTrungK15
  */
 public class AprioriModel {
+    DataSource dtsource;
+    
     /* Load and save *.arff file */
     private ArffLoader arffLoader;
     private ArffSaver arffSaver;
@@ -34,42 +36,67 @@ public class AprioriModel {
     private Apriori apriori;
     
     public AprioriModel() {
-        this.apriori = new Apriori();
     } 
     
     
-    public AprioriModel(String pathFile) throws Exception {
-        arffLoader = new ArffLoader();
-        arffLoader.setSource(new File(pathFile));
-        dataset = arffLoader.getDataSet();
+    public AprioriModel(String pathFileToLoad) throws Exception {
+        dtsource = new DataSource(pathFileToLoad);
+        dataset = dtsource.getDataSet();
         apriori = new Apriori();
     }
 
     /**
      * 
-     * Đọc dữ liệu dạng file *.csv lên chương trình
+     * Đọc dữ liệu dạng file *.arff lên chương trình
      * 
-     * @param pathFile Đường dẫn đến file dữ liệu *.csv cần tải lên
-     * @throws Exception 
+     * @param pathFileToLoad Đường dẫn đến file dữ liệu *.arff cần tải lên
+     * @throws IOException 
      */
-    public void readCSV(String pathFile) throws Exception {
-        csvLoader = new CSVLoader();
-        csvLoader.setSource(new File(pathFile));
-        dataset = csvLoader.getDataSet();
+    public void loadARFF(String pathFileToLoad) throws IOException {
+        arffLoader = new ArffLoader();
+        arffLoader.setFile(new File(pathFileToLoad));
+        dataset = arffLoader.getDataSet();
     }
     
     /**
      * 
-     * Lưu file dữ liệu dạng *.csv xuống ổ cứng
+     * Lưu file dữ liệu dạng *.arff xuống ổ cứng
      * 
-     * @param pathFile Đường dẫn đến file *.csv cần lưu
+     * @param pathFileToSave Đường dẫn đến file *.arff cần lưu
      * @throws IOException 
      */
-    public void writeCSV(String pathFile) throws IOException {
+    public void saverARFF(String pathFileToSave) throws IOException {
+        arffSaver = new ArffSaver();
+        arffSaver.setInstances(dataset);
+        arffSaver.setFile(new File(pathFileToSave));
+        arffSaver.writeBatch();
+    }
+    
+    /**
+     * 
+     * Đọc dữ liệu dạng file *.csv lên chương trình
+     * 
+     * @param pathFileToLoad Đường dẫn đến file dữ liệu *.csv cần tải lên
+     * @throws Exception 
+     */
+    public void loadCSV(String pathFileToLoad) throws Exception {
+        csvLoader = new CSVLoader();
+        csvLoader.setSource(new File(pathFileToLoad));
+        dataset = csvLoader.getDataSet();
+    }
+          
+    /**
+     * 
+     * Lưu file dữ liệu dạng *.csv xuống ổ cứng
+     * 
+     * @param pathFileToSave Đường dẫn đến file *.csv cần lưu
+     * @throws IOException 
+     */
+    public void saveCSV(String pathFileToSave) throws IOException {
         csvSaver = new CSVSaver();
         csvSaver.setInstances(dataset);
         
-        csvSaver.setFile(new File(pathFile));
+        csvSaver.setFile(new File(pathFileToSave));
         csvSaver.writeBatch();
     }
     

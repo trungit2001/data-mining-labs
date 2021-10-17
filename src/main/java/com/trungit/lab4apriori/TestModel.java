@@ -23,18 +23,20 @@ public class TestModel {
         String pathFileToLoad = "D:\\Codes\\DataWeka\\csv\\apriori.csv";
 
         /* Lưu vào đường dẫn này */
-        String pathFileToWrite = "D:\\Codes\\DataWeka\\csv\\apriori_preprocessed.csv";
-        
+//        String pathFileToWrite = "D:\\Codes\\DataWeka\\csv\\apriori_preprocessed.csv";
+        String pathFileToWrite = "D:\\Codes\\DataWeka\\arff\\apriori_preprocessed.arff";
+
         /* Các tham số tinh chỉnh cho mô hình Apriori và FP-Growth */
-        String aprioriModelConfig = "-N 10 -T 0 -C 0.9 -D 0.05 -U 1.0 -M 0.1 -S -1.0 -c -1";
+//        String aprioriModelConfig = "-N 10 -T 0 -C 0.9 -D 0.05 -U 1.0 -M 0.1 -S -1.0 -c -1";
 //        String fpGrowthModelConfig = "-P 2 -I -1 -N 10 -T 0 -C 0.9 -D 0.05 -U 1.0 -M 0.1";
         
         /* Các tham số tinh chỉnh cho bộ lọc */
 //        String argsNumericToNominalFilterConfig = "-R first-last";
         String argsRemoveFilterConfig = "-R 1";
+        
         /* Mô hình khai thác dữ liệu theo Apriori rule */
         AprioriModel aprioriModel = new AprioriModel();
-        aprioriModel.readCSV(pathFileToLoad);
+        aprioriModel.loadCSV(pathFileToLoad);
         
         /* In tập dữ liệu trước khi tiền xử lý */
         System.out.println(aprioriModel.printDataset());
@@ -45,7 +47,7 @@ public class TestModel {
         System.out.println(aprioriModel.printDataset());
 
         /* Lưu dữ liệu đã tiền xử lý vào file */
-        aprioriModel.writeCSV(pathFileToWrite);
+        aprioriModel.saverARFF(pathFileToWrite);
         System.out.println("File save success!");
     }
     
