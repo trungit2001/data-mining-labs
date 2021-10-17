@@ -16,8 +16,8 @@ public class TestModel {
      */
     public static void main(String[] args) throws Exception {
          /* Đường dẫn đến file dữ liệu cần mở, nhớ đặt 2 dấu "\" */
-        String pathFileToLoad = "D:\\Codes\\DataWeka\\arff\\apriori_preprocessed.arff";
-//        String pathFileToLoad = "D:\\Codes\\DataWeka\\arff\\weather.numeric.arff";
+//        String pathFileToLoad = "D:\\Codes\\DataWeka\\arff\\apriori.arff";
+        String pathFileToLoad = "D:\\Codes\\DataWeka\\arff\\weather.nominal.arff";
         
         /* Đọc file *.csv */
 //        String pathFileToLoad = "D:\\Codes\\DataWeka\\csv\\apriori.csv";
@@ -33,6 +33,7 @@ public class TestModel {
         /* Các tham số tinh chỉnh cho bộ lọc */
 //        String argsNumericToNominalFilterConfig = "-R first-last";
 //        String argsRemoveFilterConfig = "-R 1";
+        String argsNominalToBinaryFilterConfig = "-N -R first-last";
         
         /* Mô hình khai thác dữ liệu theo Apriori rule */
 //        AprioriModel aprioriModel = new AprioriModel();
@@ -54,6 +55,8 @@ public class TestModel {
 
         FPGrowthModel fpGrowthModel = new FPGrowthModel();
         fpGrowthModel.loadARFF(pathFileToLoad);
+        
+        fpGrowthModel.convertNominalToBinary(argsNominalToBinaryFilterConfig);
         fpGrowthModel.mineFPGrowthRules(fpGrowthModelConfig);
         
         System.out.println(fpGrowthModel.printDataset());

@@ -14,6 +14,7 @@ import weka.core.converters.CSVLoader;
 import weka.core.converters.CSVSaver;
 import weka.core.converters.ConverterUtils.DataSource;
 import weka.filters.Filter;
+import weka.filters.unsupervised.attribute.NominalToBinary;
 import weka.filters.unsupervised.attribute.Remove;
 
 /**
@@ -118,6 +119,33 @@ public class FPGrowthModel {
         dataset = Filter.useFilter(dataset, removeFilter);
     }
     
+    /**
+     * 
+     * Chuyển thuộc tính dạng Nominal sang Binary
+     * 
+     * @param argsNominalToBinaryFilterConfig Chuỗi tham số tinh chỉnh cho bộ lọc
+     * NominalToBinary của Weka
+     * @throws Exception 
+     */
+    public void convertNominalToBinary(String argsNominalToBinaryFilterConfig) throws Exception {
+        String[] argsFilter = weka.core.Utils.splitOptions(argsNominalToBinaryFilterConfig);
+        
+        NominalToBinary nominalToBinaryFilter = new NominalToBinary();
+        nominalToBinaryFilter.setOptions(argsFilter);
+        nominalToBinaryFilter.setInputFormat(dataset);
+        
+        dataset = Filter.useFilter(dataset, nominalToBinaryFilter);
+    }
+    
+    
+    
+    /**
+     * 
+     * Khai thác luật kết hợp với thuật toán FP-Growth
+     * 
+     * @param argsModelConfig Chuỗi thông số tinh chỉnh cho mô hình FP-Growth
+     * @throws Exception 
+     */
     public void mineFPGrowthRules(String argsModelConfig) throws Exception {
         String[] modelConfig = weka.core.Utils.splitOptions(argsModelConfig);
         
@@ -125,10 +153,18 @@ public class FPGrowthModel {
         fpGrowth.buildAssociations(dataset);
     }
 
+    /**
+     * 
+     * @return Bộ dữ liệu
+     */
     public String printDataset() {
         return dataset.toString();
     }
     
+    /**
+     * 
+     * @return Các luật kết hợp tìm được với thuật toán Apriori
+     */
     @Override
     public String toString() {
         return fpGrowth.toString();
