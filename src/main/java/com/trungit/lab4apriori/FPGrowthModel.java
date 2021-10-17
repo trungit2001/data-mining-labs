@@ -16,6 +16,8 @@ import weka.core.converters.ConverterUtils.DataSource;
 import weka.filters.Filter;
 import weka.filters.unsupervised.attribute.NominalToBinary;
 import weka.filters.unsupervised.attribute.Remove;
+import weka.filters.unsupervised.attribute.RemoveByName;
+import weka.filters.unsupervised.attribute.ReplaceMissingWithUserConstant;
 
 /**
  *
@@ -128,6 +130,42 @@ public class FPGrowthModel {
     }
     
     /**
+     * Loại bỏ các thuộc tính dư thừa bằng cách chọn theo biểu thức chính quy
+     * (Regex)
+     * @param argsFilterCfg Chuỗi tham số tinh chỉnh cho bộ lọc RemoveByName của
+     * Weka
+     * @throws Exception 
+     */
+    public void removeByName(String argsFilterCfg) throws Exception {
+        RemoveByName removeByNameFilter = new RemoveByName();
+        String[] argsFilter = weka.core.Utils.splitOptions(argsFilterCfg);
+        
+        removeByNameFilter.setOptions(argsFilter);
+        removeByNameFilter.setInputFormat(dataset);
+        
+        dataset = Filter.useFilter(dataset, removeByNameFilter);
+    }
+    
+    /**
+     * 
+     * Thay thế giá trị thiếu bằng giá trị người dùng nhập vào thông qua
+     * tham số tinh chỉnh của bộ lọc
+     * 
+     * @param argsFilterCfg Chuỗi tham số tinh chỉnh bộ lọc
+     * ReplaceMissingWithUserConstant của Weka
+     * @throws Exception 
+     */
+    public void replaceMissingWithUserConstant(String argsFilterCfg) throws Exception {
+        ReplaceMissingWithUserConstant replaceFilter = new ReplaceMissingWithUserConstant();
+        String[] argsFilter = weka.core.Utils.splitOptions(argsFilterCfg);
+        
+        replaceFilter.setOptions(argsFilter);
+        replaceFilter.setInputFormat(dataset);
+        
+        dataset = Filter.useFilter(dataset, replaceFilter);
+    }
+    
+    /**
      * 
      * Chuyển thuộc tính dạng Nominal sang Binary
      * 
@@ -166,6 +204,14 @@ public class FPGrowthModel {
      */
     public String printDataset() {
         return dataset.toString();
+    }
+    
+    /**
+     * 
+     * @return Tóm tắt bộ dữ liệu
+     */
+    public String printSummaryDataset() {
+        return dataset.toSummaryString();
     }
     
     /**

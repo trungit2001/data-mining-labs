@@ -1,2 +1,3 @@
-com\trungit\lab4apriori\AprioriModelTest.class
+com\trungit\lab4apriori\FPGrowthModel.class
+com\trungit\lab4apriori\TestModel.class
 com\trungit\lab4apriori\AprioriModel.class
