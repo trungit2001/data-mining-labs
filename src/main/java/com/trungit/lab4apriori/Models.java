@@ -25,6 +25,7 @@ import weka.filters.unsupervised.attribute.ReplaceMissingWithUserConstant;
  */
 public abstract class Models {
     protected Instances dataset;
+    String[] modelOptions, filterOptions;
     
     public Models() {}
     
@@ -86,14 +87,14 @@ public abstract class Models {
      * 
      * Loại bỏ các thuộc tính dư thừa theo tham số truyền vào
      * 
-     * @param argsFilterCfg Chuỗi tham số tinh chỉnh cho bộ lọc Remove
+     * @param filterOptions Chuỗi tham số tinh chỉnh cho bộ lọc Remove
      * của Weka
      * @throws Exception 
      */
-    public void remove(String argsFilterCfg) throws Exception {
+    public void remove(String filterOptions) throws Exception {
         Remove rm = new Remove();
-        String[] options = weka.core.Utils.splitOptions(argsFilterCfg);
-        rm.setOptions(options);
+        this.filterOptions = weka.core.Utils.splitOptions(filterOptions);
+        rm.setOptions(this.filterOptions);
         rm.setInputFormat(dataset);
         dataset = Filter.useFilter(dataset, rm);
     }
@@ -101,14 +102,14 @@ public abstract class Models {
     /**
      * Loại bỏ các thuộc tính dư thừa bằng cách chọn theo biểu thức chính quy
      * (Regex)
-     * @param argsFilterCfg Chuỗi tham số tinh chỉnh cho bộ lọc RemoveByName của
+     * @param filterOptions Chuỗi tham số tinh chỉnh cho bộ lọc RemoveByName của
      * Weka
      * @throws Exception 
      */
-    public void removeByName(String argsFilterCfg) throws Exception {
+    public void removeByName(String filterOptions) throws Exception {
         RemoveByName rmByName = new RemoveByName();
-        String[] options = weka.core.Utils.splitOptions(argsFilterCfg);
-        rmByName.setOptions(options);
+        this.filterOptions = weka.core.Utils.splitOptions(filterOptions);
+        rmByName.setOptions(this.filterOptions);
         rmByName.setInputFormat(dataset);
         dataset = Filter.useFilter(dataset, rmByName);
     }
@@ -118,14 +119,14 @@ public abstract class Models {
      * Thay thế giá trị thiếu bằng giá trị người dùng nhập vào thông qua
      * tham số tinh chỉnh của bộ lọc
      * 
-     * @param argsFilterCfg Chuỗi tham số tinh chỉnh bộ lọc
+     * @param filterOptions Chuỗi tham số tinh chỉnh bộ lọc
      * ReplaceMissingWithUserConstant của Weka
      * @throws Exception 
      */
-    public void replaceMissingWithUserConstant(String argsFilterCfg) throws Exception {
+    public void replaceMissingWithUserConstant(String filterOptions) throws Exception {
         ReplaceMissingWithUserConstant rpConstant = new ReplaceMissingWithUserConstant();
-        String[] options = weka.core.Utils.splitOptions(argsFilterCfg);
-        rpConstant.setOptions(options);
+        this.filterOptions = weka.core.Utils.splitOptions(filterOptions);
+        rpConstant.setOptions(this.filterOptions);
         rpConstant.setInputFormat(dataset);
         dataset = Filter.useFilter(dataset, rpConstant);
     }
@@ -134,14 +135,14 @@ public abstract class Models {
      * 
      * Chuyển đổi thuộc tính số Numeric sang thuộc tính rời rạc Nominal
      * 
-     * @param argsFilterCfg Chuỗi thông số tinh chỉnh cho bộ lọc
+     * @param filterOptions Chuỗi thông số tinh chỉnh cho bộ lọc
      * NumericToNominal của Weka
      * @throws java.lang.Exception
      */
-    public void convertNumericToNominal(String argsFilterCfg) throws Exception {
+    public void convertNumericToNominal(String filterOptions) throws Exception {
         NumericToNominal numToNom = new NumericToNominal();
-        String[] options = weka.core.Utils.splitOptions(argsFilterCfg);
-        numToNom.setOptions(options);
+        this.filterOptions = weka.core.Utils.splitOptions(filterOptions);
+        numToNom.setOptions(this.filterOptions);
         numToNom.setInputFormat(dataset);
         dataset =  Filter.useFilter(dataset, numToNom);
     }
@@ -150,14 +151,14 @@ public abstract class Models {
      * 
      * Chuyển thuộc tính dạng Nominal sang Binary
      * 
-     * @param argsFilterCfg Chuỗi tham số tinh chỉnh cho bộ lọc
+     * @param filterOptions Chuỗi tham số tinh chỉnh cho bộ lọc
      * NominalToBinary của Weka
      * @throws Exception 
      */
-    public void convertNominalToBinary(String argsFilterCfg) throws Exception {
+    public void convertNominalToBinary(String filterOptions) throws Exception {
         NominalToBinary nomToBin = new NominalToBinary();
-        String[] options = weka.core.Utils.splitOptions(argsFilterCfg);
-        nomToBin.setOptions(options);
+        this.filterOptions = weka.core.Utils.splitOptions(filterOptions);
+        nomToBin.setOptions(this.filterOptions);
         nomToBin.setInputFormat(dataset);
         dataset = Filter.useFilter(dataset, nomToBin);
     }
@@ -166,14 +167,14 @@ public abstract class Models {
      * 
      * Chuyển thuộc tính dạng Numeric sang Binary
      * 
-     * @param argsFilterCfg Chuỗi tham số tinh chỉnh cho bộ lọc
+     * @param filterOptions Chuỗi tham số tinh chỉnh cho bộ lọc
      * NumericToBinary của Weka
      * @throws Exception 
      */
-    public void convertNumericToBinary(String argsFilterCfg) throws Exception {
+    public void convertNumericToBinary(String filterOptions) throws Exception {
         NumericToBinary numToBin = new NumericToBinary();
-        String[] options = weka.core.Utils.splitOptions(argsFilterCfg);
-        numToBin.setOptions(options);
+        this.filterOptions = weka.core.Utils.splitOptions(filterOptions);
+        numToBin.setOptions(this.filterOptions);
         numToBin.setInputFormat(dataset);
         dataset = Filter.useFilter(dataset, numToBin);
     }
@@ -182,12 +183,12 @@ public abstract class Models {
      * Phương thức trừu tượng, yêu cầu ghi đè khi kế thừa lớp này
      * Khai thác luật kết hợp trên bộ dữ liệu
      * 
-     * @param argsModelCfg Chuỗi thông số tinh chỉnh cho mô hình tương ứng của
+     * @param modelOptions Chuỗi thông số tinh chỉnh cho mô hình tương ứng của
      * lớp con kế thừa
      * 
      * @throws Exception
      */
-    public abstract void mineRules(String argsModelCfg) throws Exception;
+    public abstract void mineRules(String modelOptions) throws Exception;
     
     /**
      * 

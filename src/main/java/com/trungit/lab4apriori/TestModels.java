@@ -8,7 +8,7 @@ package com.trungit.lab4apriori;
  *
  * @author ThanhTrungK15
  */
-public class TestModel {
+public class TestModels {
 
     /**
      * @param args the command line arguments
@@ -28,17 +28,18 @@ public class TestModel {
            /* Các tham số tinh chỉnh cho mô hình Apriori và FP-Growth */
             String arModelCfg = "-N 10 -T 0 -C 0.9 -D 0.05 -U 1.0 -M 0.1 -S -1.0 -c -1";
             String fpModelCfg = "-P 2 -I -1 -N 10 -T 0 -C 0.9 -D 0.05 -U 1.0 -M 0.1";
-            String argsRemoveFilterCfg = "-R 1";
+            
+            /* Các tham số tinh chỉnh cho các bộ lọc */
+//            String argsRemoveFilterCfg = "-R 1";
             String argsRemoveByNameFilterCfg = "-E department[0-9]+";
             String argsReplaceMissingFilterCfg = "-A first-last -N f -R 0 -F \"yyyy-MM-dd\\'T\\'HH:mm:ss\"";
             String argsNominalToBinaryFilterCfg = "-N -R first-last";
 
            /* Bài 1 */
             AprioriModel arModel = new AprioriModel(pathFileToLoad);
-            arModel.remove(argsRemoveFilterCfg);
+            arModel.removeByName(argsRemoveByNameFilterCfg);
             arModel.mineRules(arModelCfg);
             
-            System.out.println(arModel.printSummaryDataset());
             System.out.println(arModel.toString());
                  
            /* Bài 2 */

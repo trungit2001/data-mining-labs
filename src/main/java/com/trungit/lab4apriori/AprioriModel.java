@@ -41,9 +41,9 @@ public class AprioriModel extends Models {
      * @throws java.lang.Exception
      */
     @Override
-    public void mineRules(String argsModelCfg) throws Exception {
-        String[] options = weka.core.Utils.splitOptions(argsModelCfg);
-        apriori.setOptions(options);
+    public void mineRules(String modelOptions) throws Exception {
+        super.modelOptions = weka.core.Utils.splitOptions(modelOptions);
+        apriori.setOptions(super.modelOptions);
         apriori.buildAssociations(dataset);
     }
     

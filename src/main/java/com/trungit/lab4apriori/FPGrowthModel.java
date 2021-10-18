@@ -41,14 +41,12 @@ public class FPGrowthModel extends Models {
      * @throws Exception 
      */
     @Override
-    public void mineRules(String argsModelCfg) throws Exception {
-        String[] options = weka.core.Utils.splitOptions(argsModelCfg);
-        fpGrowth.setOptions(options);
+    public void mineRules(String modelOptions) throws Exception {
+        super.modelOptions = weka.core.Utils.splitOptions(modelOptions);
+        fpGrowth.setOptions(super.modelOptions);
         fpGrowth.buildAssociations(dataset);
     }
 
-    
-    
     /**
      * 
      * @return Các luật kết hợp tìm được với thuật toán FP-Growth
