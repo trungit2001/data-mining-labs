@@ -192,6 +192,15 @@ public abstract class Models {
     
     /**
      * 
+     * Xuất kết quả khai thác luật kết hợp ra file
+     * 
+     * @param pathFileToWriteResult Đường dẫn đến file lưu kết quả trên ổ đĩa
+     * @throws IOException 
+     */
+    public abstract void saveResultMines(String pathFileToWriteResult) throws IOException;
+    
+    /**
+     * 
      * @return Bộ dữ liệu
      */
     public String printDataset() {

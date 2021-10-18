@@ -4,6 +4,9 @@
  */
 package com.trungit.lab4apriori;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import weka.associations.FPGrowth;
 
 /**
@@ -37,7 +40,7 @@ public class FPGrowthModel extends Models {
      * 
      * Khai thác luật kết hợp với thuật toán FP-Growth
      * 
-     * @param argsModelCfg Chuỗi thông số tinh chỉnh cho mô hình FP-Growth
+     * @param modelOptions Chuỗi thông số tinh chỉnh cho mô hình FP-Growth
      * @throws Exception 
      */
     @Override
@@ -47,6 +50,22 @@ public class FPGrowthModel extends Models {
         fpGrowth.buildAssociations(dataset);
     }
 
+    /**
+     * 
+     * Xuất kết quả khai thác luật kết hợp theo FP-Growth ra file
+     * 
+     * @param pathFileToWriteResult Đường dẫn đến file lưu kết quả trên ổ đĩa
+     * @throws IOException 
+     */
+    @Override
+    public void saveResultMines(String pathFileToWriteResult) throws IOException {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(pathFileToWriteResult))) {
+            bw.write(toString());
+        } catch (Exception e) {
+            throw(e);
+        }
+    }
+    
     /**
      * 
      * @return Các luật kết hợp tìm được với thuật toán FP-Growth
