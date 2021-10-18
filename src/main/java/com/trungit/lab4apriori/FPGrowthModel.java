@@ -47,6 +47,8 @@ public class FPGrowthModel extends Models {
         fpGrowth.buildAssociations(dataset);
     }
 
+    
+    
     /**
      * 
      * @return Các luật kết hợp tìm được với thuật toán FP-Growth
