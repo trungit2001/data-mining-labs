@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
  */
-package com.trungit.lab4apriori;
+package lab04;
 
 /**
  *
@@ -29,7 +29,7 @@ public class TestModels {
             String pathFileToWriteResult = "D:\\Codes\\DataWeka\\results\\supermarket_result.txt";
             
            /* Các tham số tinh chỉnh cho mô hình Apriori và FP-Growth */
-            String arModelCfg = "-N 10 -T 0 -C 0.9 -D 0.05 -U 1.0 -M 0.1 -S -1.0 -c -1";
+//            String arModelCfg = "-N 10 -T 0 -C 0.9 -D 0.05 -U 1.0 -M 0.1 -S -1.0 -c -1";
             String fpModelCfg = "-P 2 -I -1 -N 10 -T 0 -C 0.9 -D 0.05 -U 1.0 -M 0.1";
             
             /* Các tham số tinh chỉnh cho các bộ lọc */
@@ -39,12 +39,12 @@ public class TestModels {
             String argsNominalToBinaryFilterCfg = "-N -R first-last";
 
            /* Bài 1 */
-            AprioriModel arModel = new AprioriModel(pathFileToLoad);
-            arModel.removeByName(argsRemoveByNameFilterCfg);
-            arModel.mineRules(arModelCfg);
-            arModel.saveARFF(pathFileToWriteResult);
-            
-            System.out.println(arModel.toString());
+//            AprioriModel arModel = new AprioriModel(pathFileToLoad);
+//            arModel.removeByName(argsRemoveByNameFilterCfg);
+//            arModel.mineRules(arModelCfg);
+//            arModel.saveARFF(pathFileToWriteResult);
+//            
+//            System.out.println(arModel.toString());
                  
            /* Bài 2 */
             FPGrowthModel fpModel = new FPGrowthModel(pathFileToLoad);
@@ -58,5 +58,23 @@ public class TestModels {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+//        String basePath = "D:\\Codes\\DataWeka\\arff\\";
+//        String mushTrain = basePath + "mushroom_train.arff";
+//        String mushTest = basePath + "mushroom_test.arff";
+//        String mushNew = basePath + "mushroom_new.arff";
+//        String mushPredicted = basePath + "mushroom_predicted.arff";
+//        
+//        NaiveBayesClassifier nbModel = new NaiveBayesClassifier();
+//        
+//        Instances trainSet = nbModel.loadARFF(mushTrain);
+//        Instances testSet = nbModel.loadARFF(mushTest);
+//        Instances newSet = nbModel.loadARFF(mushNew);
+//        
+//        nbModel.buildNBModel(trainSet);
+//        nbModel.evalModel(testSet, 10);
+//        nbModel.predict(newSet, mushPredicted);
+        
+//        System.out.println(nbModel.printSummary());
+//        System.out.println(nbModel.printEvalResult());
     }
 }
