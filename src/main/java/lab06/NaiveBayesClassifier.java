@@ -18,13 +18,15 @@ import weka.core.Instances;
 public class NaiveBayesClassifier extends Classification {
     NaiveBayes naiveBayes;
     
-    public NaiveBayesClassifier() {
+    public NaiveBayesClassifier() throws Exception {
         naiveBayes = new NaiveBayes();
     }
 
     @Override
-    public void fit() throws Exception {
+    public void fit(String modelOptions) throws Exception {
         super.trainSet.setClassIndex(super.trainSet.numAttributes() - 1);
+        super.modelOptions = weka.core.Utils.splitOptions(modelOptions);      
+        naiveBayes.setOptions(super.modelOptions);
         naiveBayes.buildClassifier(super.trainSet);
     }
 
@@ -55,11 +57,8 @@ public class NaiveBayesClassifier extends Classification {
         return newDataset;
     }
 
-    public String printSummary() {
+    @Override
+    public String toString() {
         return naiveBayes.toString();
-    }
-    
-    public String printEvalResult() throws Exception {
-        return String.format("%s\n%s", eval.toSummaryString(), eval.toMatrixString());
     }
 }

@@ -20,6 +20,7 @@ import weka.core.converters.CSVSaver;
 public abstract class Classification {
     protected Instances trainSet, testSet;
     protected Evaluation eval;
+    protected String[] modelOptions;
     
     public Classification() {}
     
@@ -57,13 +58,17 @@ public abstract class Classification {
         testSet = dataset;
     }
     
-    public abstract void fit() throws Exception;
+    public abstract void fit(String modelOptions) throws Exception;
     
     public abstract void crossValidation(int k, int seed) throws Exception;
     
     public abstract void evalPerformance() throws Exception;
     
     public abstract Instances predict(Instances newDataset) throws Exception;
+    
+    public String printEvalResult() throws Exception {
+        return String.format("%s\n%s", eval.toSummaryString(), eval.toMatrixString());
+    }
     
     @Override
     public String toString() {
