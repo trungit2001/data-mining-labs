@@ -10,7 +10,7 @@ import weka.core.Instances;
 
 /**
  *
- * @author admin
+ * @author ThanhTrungK15
  */
 public class KMeans extends Clustering {
     SimpleKMeans kmeans;
@@ -38,4 +38,3 @@ public class KMeans extends Clustering {
         return kmeans.toString();
     }
 }
-    
